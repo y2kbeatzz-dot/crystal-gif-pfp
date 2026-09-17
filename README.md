@@ -7,7 +7,7 @@
 
 Local animated profile pictures · Optional verified community sharing · Dark purple UI
 
-[Download the shared extension](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
+[Landing page HTML](index.html) · [Download the shared extension](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
 
 </div>
 
@@ -59,6 +59,16 @@ Local mode makes no requests to the shared service. Shared mode sends visible ch
 Server integration tests use a real in-memory SQLite database with a mocked YouTube API. They cover verification, invalid tokens, replay rejection, publishing, separate viewer lookups, removal, request limits and validation. The deployed service responds to health checks and has its verification secret configured. Live YouTube compatibility, successful channel verification and sharing between browsers still need acceptance testing.
 
 YouTube can change its markup. Shared matching currently covers linked avatars, comment authors and channel headers where the channel and original avatar can be identified. Live chat, YouTube Studio, mobile apps, unlinked avatars and every possible YouTube layout are not guaranteed. The local image-address match can also affect identical/default pictures; use a unique original avatar. If a channel changes its normal avatar or handle, reverify to refresh its shared mapping.
+
+## Check that sharing works
+
+1. In your main Chrome profile, choose a looping GIF, verify your channel and publish it.
+2. Create a second Chrome profile and install this same extension there. Enable **See other members' GIFs**. Do not select a local GIF in that profile.
+3. Open your channel and a video or comment with your linked avatar in the second profile. Your published GIF should animate.
+4. Navigate to another video and check again. Turn community pictures off to confirm the ordinary avatar returns.
+5. Delete the shared profile in your main profile. Allow five minutes for caches, then check that it disappears for the second viewer.
+
+A healthy service alone does not prove these browser checks pass. Please report any failed step through Issues.
 
 ## Credits
 
