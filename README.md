@@ -7,13 +7,13 @@
 
 Local animated profile pictures · Optional verified community sharing · Dark purple UI
 
-[Download the latest build](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/releases) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues) · [Cloudflare setup](CLOUDFLARE-SETUP.md)
+[Download the shared extension](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
 
 </div>
 
 ## Current status
 
-**Local mode is available. The shared-service implementation is included, but the public Cloudflare service is not deployed yet.** Community controls remain disabled until a build is configured with a deployed service. This is a GitHub preview release, not a Chrome Web Store listing.
+**The shared service is deployed, and the download is already connected.** Install the extension to use local GIFs or opt into community sharing. No server setup or API key is needed for users. This is a GitHub preview, not a Chrome Web Store listing. Live channel verification and sharing between browsers still need acceptance testing.
 
 Only people using this extension and the same shared service can see each other's published GIFs. Everyone else still sees the normal YouTube picture. This extension does not change the public picture on Google's servers.
 
@@ -21,9 +21,9 @@ Only people using this extension and the same shared service can see each other'
 
 ## Install in Chrome
 
-1. Download `Crystal-GIF-PFP.zip` from Releases and extract it into a permanent folder.
+1. [Download the project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) and use **Extract All** into a permanent folder.
 2. Open `chrome://extensions` and enable **Developer mode**.
-3. Click **Load unpacked** and select the folder containing `manifest.json`.
+3. Click **Load unpacked**, open the extracted `crystal-gif-pfp-main` folder, and select its **extension** folder (the one containing `manifest.json`).
 4. Refresh YouTube once. Open Crystal from Chrome's puzzle menu.
 5. Choose a GIF, click **Select my picture on YouTube**, then click your profile picture.
 
@@ -40,7 +40,7 @@ To update without losing your saved GIF, replace the files in the same folder, c
 
 A shared GIF must be at most **512 KB** and **512 × 512 pixels**. Local GIFs can be up to **5 MB**. Use a looping GIF for continuous playback; new image elements start from the first frame.
 
-## Shared profiles — after deployment
+## Share your GIF
 
 1. Enable **See other members' GIFs** if you want community pictures.
 2. Open **Share my GIF**, enter your YouTube handle, and start verification.
@@ -54,26 +54,9 @@ Publishing is public. You can remove it with **Delete shared profile**. Uninstal
 
 Local mode makes no requests to the shared service. Shared mode sends visible channel IDs or handles for lookup; it does not send video URLs, comments, or video titles. The service stores published GIFs, channel metadata, verification timestamps and hashed management tokens. Management credentials stay in trusted extension storage, away from YouTube page scripts. See [the privacy policy](extension/privacy.html).
 
-## Hosting and development
-
-Cloudflare Workers + D1 run the service. A YouTube Data API v3 key is required on the server for public channel verification. The extension never receives that key. Free tiers have quotas; no unlimited-free hosting claim is made.
-
-```bash
-# Node 24 or newer, for the built-in SQLite test adapter
-node --test server/test.mjs
-
-# Package a local-only build
-python scripts/package.py
-
-# Package a shared build after deploying your service
-python scripts/package.py --api https://YOUR-WORKER.YOUR-SUBDOMAIN.workers.dev
-```
-
-See [CLOUDFLARE-SETUP.md](CLOUDFLARE-SETUP.md) for deployment and [STORE-LISTING.md](STORE-LISTING.md) for future store submission copy.
-
 ## Limitations and testing
 
-Server integration tests use a real in-memory SQLite database with a mocked YouTube API. They cover verification, invalid tokens, replay rejection, publishing, separate viewer lookups, removal, request limits and validation. Live YouTube compatibility and a production Cloudflare deployment still need acceptance testing.
+Server integration tests use a real in-memory SQLite database with a mocked YouTube API. They cover verification, invalid tokens, replay rejection, publishing, separate viewer lookups, removal, request limits and validation. The deployed service responds to health checks and has its verification secret configured. Live YouTube compatibility, successful channel verification and sharing between browsers still need acceptance testing.
 
 YouTube can change its markup. Shared matching currently covers linked avatars, comment authors and channel headers where the channel and original avatar can be identified. Live chat, YouTube Studio, mobile apps, unlinked avatars and every possible YouTube layout are not guaranteed. The local image-address match can also affect identical/default pictures; use a unique original avatar. If a channel changes its normal avatar or handle, reverify to refresh its shared mapping.
 
