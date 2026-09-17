@@ -72,4 +72,4 @@ A healthy service alone does not prove these browser checks pass. Please report 
 
 ## Credits
 
-Built by [Crystal / Nitta Hoshi](https://github.com/y2kbeatzz-dot). The original purple loop-avatar icon was generated with AI. This project is independent and is not affiliated with or endorsed by Google or YouTube.
+Built by [Crystal / Nitta Hoshi](https://github.com/y2kbeatzz-dot). This project is independent and is not affiliated with or endorsed by Google or YouTube.
