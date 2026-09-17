@@ -9,7 +9,8 @@
     "scripting"
   ],
   "host_permissions": [
-    "https://www.youtube.com/*"
+    "https://www.youtube.com/*",
+    "https://crystal-shared-pfp.crystal999bots.workers.dev/*"
   ],
   "background": {
     "service_worker": "background.js"
