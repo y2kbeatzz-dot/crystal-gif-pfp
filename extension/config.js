@@ -1,2 +1,1 @@
-// Set by the release script after the shared service is deployed.
-const CONFIG = Object.freeze({apiBase:''});
+const CONFIG = Object.freeze({apiBase:'https://crystal-shared-pfp.crystal999bots.workers.dev'});
