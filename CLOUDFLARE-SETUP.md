@@ -2,20 +2,36 @@
 
 The service is not deployed yet. Stay on Cloudflare's Free plan unless you independently choose to upgrade. GitHub distribution is free; Chrome Web Store registration is separate.
 
+## Windows: automatic setup (recommended)
+
+Download **Crystal-Cloudflare-Setup.zip** from the GitHub release, choose **Extract All**, then double-click **SETUP-CLOUDFLARE.cmd** inside the extracted folder.
+
+Requires Node.js 22 or newer. The launcher uses your existing Wrangler login, installs the command-line tool, creates/reuses this project's database, writes its returned ID, applies the schema, deploys the Worker, prompts for the YouTube API key if missing, sets an admin secret, and builds the shared extension. It does not enable a paid plan. API-key entry is local to the Cloudflare prompt, never in chat.
+
+The result is in `dist/Crystal-GIF-PFP-Shared.zip`, with the public URL in `dist/SETUP-RESULT.txt`. Keep `.crystal-admin-token.txt` private; it is excluded from Git. All members should install the resulting shared ZIP. Channel verification and a two-profile YouTube test are still required.
+
+If setup stops, read the displayed error and run the same launcher again after fixing it. Do not upload the entire working folder after setup because it contains your private admin token.
+
+## Manual alternative
+
+In Windows PowerShell use **npm.cmd** and **npx.cmd**, not `npm` or `npx`. No PowerShell execution-policy change is needed. You must be inside the downloaded project's `server` folder. The extension-only ZIP does not contain that folder; download **Source code (zip)** from the release or use **Code → Download ZIP** on the repository.
+
+If Wrangler already said **Successfully logged in**, skip the login command.
+
 ## 1. Create the database
 
 Install Node.js LTS from its official site. Open a terminal in `server`:
 
 ```powershell
-npm install
-npx wrangler login
-npx wrangler d1 create crystal-shared-pfp
+npm.cmd install
+npx.cmd wrangler login
+npx.cmd wrangler d1 create crystal-shared-pfp
 ```
 
 Copy the returned database ID into `server/wrangler.jsonc`, replacing `REPLACE_WITH_CREATED_DATABASE_ID`. Use the database returned for this project; do not modify another project's database.
 
 ```powershell
-npx wrangler d1 execute crystal-shared-pfp --remote --file=schema.sql
+npx.cmd wrangler d1 execute crystal-shared-pfp --remote --file=schema.sql
 ```
 
 ## 2. Configure verification and administration
@@ -25,13 +41,13 @@ In Google Cloud Console, create/select a project and enable **YouTube Data API v
 Store it directly in Cloudflare's secret prompt:
 
 ```powershell
-npx wrangler secret put YOUTUBE_API_KEY
+npx.cmd wrangler secret put YOUTUBE_API_KEY
 ```
 
 Generate a separate long random admin token in a password manager. Store it in that manager and in Cloudflare:
 
 ```powershell
-npx wrangler secret put ADMIN_TOKEN
+npx.cmd wrangler secret put ADMIN_TOKEN
 ```
 
 Never include secrets in `wrangler.jsonc`, `config.js`, a screenshot, a commit, or an issue.
@@ -39,7 +55,7 @@ Never include secrets in `wrangler.jsonc`, `config.js`, a screenshot, a commit, 
 ## 3. Deploy
 
 ```powershell
-npx wrangler deploy
+npx.cmd wrangler deploy
 ```
 
 Open the URL printed by Wrangler with `/health` appended. Expect `service: crystal-shared-pfp`, `version: 2`, and `verificationConfigured: true`. Its `/privacy` page is the policy URL. Scheduled daily cleanup removes expired profiles, challenges and rate-limit records.
