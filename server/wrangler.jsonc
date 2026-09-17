@@ -1,0 +1,9 @@
+{
+  "name": "crystal-shared-pfp",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  "observability": {"enabled": false},
+  "d1_databases": [{"binding":"DB", "database_name":"crystal-shared-pfp", "database_id":"REPLACE_WITH_CREATED_DATABASE_ID"}],
+  "triggers": {"crons":["0 3 * * *"]}
+}

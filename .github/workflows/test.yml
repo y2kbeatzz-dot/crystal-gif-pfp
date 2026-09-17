@@ -1,0 +1,22 @@
+name: Validate
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: node --test server/test.mjs
+      - run: node --check extension/background.js && node --check extension/content.js && node --check extension/popup.js
+      - run: python scripts/package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Crystal-GIF-PFP
+          path: dist/Crystal-GIF-PFP.zip
