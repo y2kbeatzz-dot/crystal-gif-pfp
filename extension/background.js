@@ -17,9 +17,9 @@ if(m.type==='local-selection'){
 }
 if(!ui)throw Error('This action is only available in the extension.');
 if(m.type==='set'){const allowed={};for(const k of publicKeys)if(k in m.values)allowed[k]=m.values[k];await chrome.storage.local.set(allowed);cache.clear();return {ok:true};}
-if(m.type==='account'){const s=await chrome.storage.local.get('account');const h=CONFIG.apiBase?await health():{version:0};return {account:s.account?{channel:s.account.channel,title:s.account.title,handle:s.account.handle||''}:null,ready:!!CONFIG.apiBase&&Number(h.version)>=2,publishReady:!!CONFIG.apiBase&&Number(h.version)>=4,serviceVersion:Number(h.version)||0};}
+if(m.type==='account'){const s=await chrome.storage.local.get('account');const h=CONFIG.apiBase?await health():{version:0};return {account:s.account?{channel:s.account.channel,title:s.account.title,handle:s.account.handle||''}:null,ready:!!CONFIG.apiBase&&Number(h.version)>=2,publishReady:!!CONFIG.apiBase&&Number(h.version)>=5,serviceVersion:Number(h.version)||0};}
 if(m.type==='claim'){
-  const h=await health();if(Number(h.version)<3)throw Error('Cloudflare is still running the old sharing service. Run FIX-ALL.cmd once, then try again.');
+  const h=await health();if(Number(h.version)<5)throw Error('Community sharing needs Worker v5 for the 1 MB limit. Update the Cloudflare Worker, then try again.');
   if(typeof m.avatar_key!=='string'||!m.avatar_key)throw Error('Could not detect your signed-in YouTube account. Sign in to YouTube and try again.');
   const a=await api('/claim',{method:'POST',body:{channel:m.channel,avatar_key:m.avatar_key}});
   await chrome.storage.local.set({account:a});
