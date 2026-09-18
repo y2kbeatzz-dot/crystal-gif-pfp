@@ -16,7 +16,14 @@ function imageRef(img){
   // YouTube regularly changes channel-header wrappers. Fall back to the large,
   // near-square image in the upper part of a channel page.
   const r=img.getBoundingClientRect();
-  if(r.width>=64&&r.width<=260&&r.height>=64&&r.height<=260&&Math.abs(r.width-r.height)<12&&r.top>=80&&r.top<620&&r.left<420)return page;
+  // Channel layouts vary depending on sidebar width, window size, account state,
+  // and YouTube experiments. Identify the large channel avatar by geometry,
+  // while excluding navigation/account UI.
+  const inUi=img.closest('#masthead,#guide,#avatar-btn,ytd-mini-guide-renderer,ytd-guide-renderer');
+  const square=Math.abs(r.width-r.height)<16;
+  const largeAvatar=r.width>=72&&r.width<=320&&r.height>=72&&r.height<=320;
+  const inHeaderBand=r.top>=70&&r.top<720&&r.left>=0&&r.left<Math.min(innerWidth*0.72,1100);
+  if(!inUi&&square&&largeAvatar&&inHeaderBand)return page;
   return '';
 }
 function desired(img,originalKey){
