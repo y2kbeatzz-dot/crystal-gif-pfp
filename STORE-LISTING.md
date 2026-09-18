@@ -24,6 +24,8 @@ Remote code: None. The service returns JSON and GIF images only; all executable 
 
 Data disclosure: Shared mode transmits visible channel IDs/handles. Publishing stores the public GIF, channel association, title, avatar key and timestamps. The service stores hashed access tokens and hashed IP rate-limit buckets. The avatar-match connection is a convenience check, not Google OAuth or cryptographic proof of ownership. Reflect this accurately in the store privacy form.
 
-Assets: icon128.png (128 × 128), promo-small.png (440 × 280), promo.png (1280 × 800 promotional artwork). Capture a real v2.1 extension screenshot before store submission.
+Assets: icon128.png (128 × 128), promo-small.png (440 × 280), promo.png (1280 × 800 promotional artwork). Capture a real v2.5.0 extension screenshot before store submission.
 
-Before submission: deploy the v2.1 worker, test with two Chrome profiles, supply a working publisher support contact and hosted privacy-policy URL, and complete Google's developer registration.
+Before submission: deploy Worker v5, test 1 MB community sharing with two Chrome profiles, supply a working publisher support contact and hosted privacy-policy URL, and complete Google's developer registration.
+
+Community media limit: Shared GIFs are limited to 1 MB and 512 × 512 px. Local GIFs can be up to 5 MB.
