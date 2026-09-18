@@ -13,7 +13,7 @@ Local animated profile pictures · Optional community sharing · **No channel-de
 
 ## Current status
 
-**v2.3.0 is live.** Cross-account community viewing now handles wide YouTube sidebars and alternate channel layouts, the profile-description verification code is gone, and the shared Cloudflare service is running **Worker v4**. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
+**v2.4.0 is live.** Cross-account community viewing now handles wide YouTube sidebars and alternate channel layouts, the profile-description verification code is gone, and the shared Cloudflare service is running **Worker v4**. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
 
 Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
 
@@ -36,9 +36,10 @@ To update without losing your settings, replace the files in the same extension 
 - Connects a publishing channel by automatically reading the signed-in YouTube account avatar and matching it with the public avatar for the handle you enter.
 - Publishes one GIF per connected channel, with deletion, blocking, reporting, and operator removal tools.
 - Matches shared GIFs by the YouTube channel reference, so different avatar CDN sizes/URLs on different accounts no longer break community viewing.
+- Includes a GIF readiness checker and optimizer/resize/convert tools in the popup.
 - Does **not** require a verification string in your bio/channel description.
 
-A shared GIF must be at most **512 KB** and **512 × 512 pixels**. Local GIFs can be up to **5 MB**. Use a looping GIF for continuous playback.
+A shared GIF must be a real GIF file, at most **512 KB**, and **512 × 512 pixels** or smaller. Local GIFs can be up to **5 MB**. v2.4.0 includes a built-in share-readiness checker plus quick links to optimize, resize, or convert GIFs before publishing.
 
 ## Share your GIF — no profile code
 
@@ -65,7 +66,7 @@ Connected profiles expire after **180 days** unless refreshed by publishing agai
 
 ## Check that community sharing works
 
-1. In your main Chrome profile, install/reload v2.3.0, sign into the channel, choose a small looping GIF, enter your handle, and publish.
+1. In your main Chrome profile, install/reload v2.4.0, sign into the channel, choose a small looping GIF, enter your handle, and publish.
 2. Create a second Chrome profile and install the same extension there. Enable **See other members' GIFs**. The viewer profile does **not** need to sign into YouTube, choose a GIF, or select an avatar.
 3. Open the published channel or a video/comment where that channel avatar is linked. The GIF should animate for the second profile.
 4. Turn Community pictures off and confirm the ordinary avatar returns.
