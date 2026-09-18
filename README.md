@@ -7,7 +7,7 @@
 
 Local animated profile pictures · Optional community sharing · **No channel-description code** · Dark purple UI
 
-[⬇️ Download FIX EVERYTHING](https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/FIX-EVERYTHING.cmd) · [Download full project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
+[⬇️ Download FIX EVERYTHING ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/raw/refs/heads/main/downloads/Crystal-GIF-PFP-FIX-EVERYTHING.zip) · [Download full project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
 
 </div>
 
