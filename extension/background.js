@@ -1,6 +1,6 @@
 importScripts('config.js');
 const cache=new Map();
-const publicKeys=['gif','target','accountAvatar','enabled','sharedEnabled','blocked'];
+const publicKeys=['gif','target','enabled','sharedEnabled','blocked'];
 chrome.storage.local.setAccessLevel({accessLevel:'TRUSTED_CONTEXTS'});
 function base(){if(!CONFIG.apiBase)throw Error('Shared service is not online yet. Local GIF mode still works.');const u=new URL(CONFIG.apiBase);if(u.protocol!=='https:')throw Error('Service must use HTTPS.');return u.origin;}
 async function api(path,{method='GET',body,token}={}){const r=await fetch(base()+path,{method,headers:{...(body?{'Content-Type':'application/json'}:{}),...(token?{Authorization:'Bearer '+token}:{})},body:body?JSON.stringify(body):undefined,credentials:'omit',signal:AbortSignal.timeout(20000)});let data;try{data=await r.json();}catch{data={};}if(!r.ok)throw Error(data.error||'Service unavailable.');return data;}
@@ -18,10 +18,8 @@ if(!ui)throw Error('This action is only available in the extension.');
 if(m.type==='set'){const allowed={};for(const k of publicKeys)if(k in m.values)allowed[k]=m.values[k];await chrome.storage.local.set(allowed);cache.clear();return {ok:true};}
 if(m.type==='account'){const s=await chrome.storage.local.get('account');return {account:s.account?{channel:s.account.channel,title:s.account.title,handle:s.account.handle||''}:null,ready:!!CONFIG.apiBase};}
 if(m.type==='claim'){
-  const s=await chrome.storage.local.get(['target','accountAvatar']);
-  if(!s.target)throw Error('Choose your YouTube profile picture first.');
-  if(!s.accountAvatar)throw Error('For community sharing, click Select my picture and choose your signed-in avatar in the top-right of YouTube.');
-  const a=await api('/claim',{method:'POST',body:{channel:m.channel,avatar_key:s.target}});
+  if(typeof m.avatar_key!=='string'||!m.avatar_key)throw Error('Could not detect your signed-in YouTube account. Sign in to YouTube and try again.');
+  const a=await api('/claim',{method:'POST',body:{channel:m.channel,avatar_key:m.avatar_key}});
   await chrome.storage.local.set({account:a});
   return {channel:a.channel,title:a.title,handle:a.handle||''};
 }
