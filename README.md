@@ -7,13 +7,13 @@
 
 Local animated profile pictures · Optional community sharing · **No channel-description code** · Dark purple UI
 
-[Landing page HTML](index.html) · [Download the extension](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
+[⬇️ Download FIX EVERYTHING](https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/FIX-EVERYTHING.cmd) · [Download full project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
 
 </div>
 
 ## Current status
 
-**v2.2 fixes cross-account community viewing and removes the profile-description verification code.** The shared Cloudflare service is connected in the extension. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
+**v2.2.1 fixes cross-account community viewing and removes the profile-description verification code.** The shared Cloudflare service is connected in the extension. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
 
 Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
 
@@ -80,4 +80,4 @@ Built by [Crystal / Nitta Hoshi](https://github.com/y2kbeatzz-dot). This project
 
 ## One-click repair / Cloudflare update
 
-Run `FIX-ALL.cmd` from the project folder. It installs Wrangler if needed, finds the existing `crystal-shared-pfp` D1 database automatically, applies the idempotent schema, deploys the current Worker, checks the live health endpoint, and opens Chrome's extensions page. It does not create a second database or replace your Cloudflare account.
+Download and run [`FIX-EVERYTHING.cmd`](https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/FIX-EVERYTHING.cmd). It downloads the newest updater automatically, finds your existing `crystal-shared-pfp` D1 database, updates the extension files, applies the safe schema, deploys the current Worker, verifies the live service, and opens Chrome's extensions page. It does **not** create a second database or replace your Cloudflare account.
