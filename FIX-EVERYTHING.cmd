@@ -22,17 +22,14 @@ if errorlevel 1 (
   exit /b 1
 )
 
-set "FIXSCRIPT=%~dp0scripts\fix-everything.mjs"
+set "FIXSCRIPT=%TEMP%\crystal-gif-pfp-fix-everything.mjs"
 
-if not exist "%FIXSCRIPT%" (
-  set "FIXSCRIPT=%TEMP%\crystal-gif-pfp-fix-everything.mjs"
-  echo Downloading newest repair script...
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/scripts/fix-everything.mjs' -OutFile '%FIXSCRIPT%'"
-  if errorlevel 1 (
-    echo ERROR: Could not download the repair script from GitHub.
-    pause
-    exit /b 1
-  )
+echo Downloading newest repair script...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/scripts/fix-everything.mjs' -OutFile '%FIXSCRIPT%'"
+if errorlevel 1 (
+  echo ERROR: Could not download the repair script from GitHub.
+  pause
+  exit /b 1
 )
 
 node.exe "%FIXSCRIPT%"
