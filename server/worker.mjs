@@ -13,7 +13,7 @@ async function channel(env,reference){if(!env.YOUTUBE_API_KEY)fail('Channel look
 async function auth(req,env){const token=req.headers.get('Authorization')?.replace(/^Bearer /,'');if(!token||!/^[a-f0-9]{48}$/.test(token))fail('Connect your channel first.',401);const p=await env.DB.prepare('SELECT * FROM profiles WHERE token_hash=?').bind(await hash(token)).first();if(!p)fail('Session expired. Connect your channel again.',401);return p;}
 async function isBlocked(env,id){return await env.DB.prepare('SELECT channel FROM blocked WHERE channel=?').bind(id).first();}
 async function route(req,env){const url=new URL(req.url),path=url.pathname;
-if(path==='/health')return json({service:'crystal-shared-pfp',version:3,connection:'avatar-match',connectionDays:180,verificationConfigured:!!env.YOUTUBE_API_KEY});
+if(path==='/health')return json({service:'crystal-shared-pfp',version:4,connection:'avatar-match',connectionDays:180,communityLookup:'channel-ref',verificationConfigured:!!env.YOUTUBE_API_KEY});
 if(path==='/privacy'||path==='/')return new Response(PRIVACY,{headers:{'Content-Type':'text/html;charset=utf-8','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'",'X-Content-Type-Options':'nosniff'}});
 if(!env.DB)fail('Service database is not configured.',503);
 const ip=req.headers.get('CF-Connecting-IP')||'local';
