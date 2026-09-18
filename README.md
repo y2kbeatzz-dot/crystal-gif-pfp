@@ -13,7 +13,7 @@ Local animated profile pictures · Optional community sharing · **No channel-de
 
 ## Current status
 
-**v2.2.2 is live.** Cross-account community viewing is fixed, the profile-description verification code is gone, and the shared Cloudflare service is running **Worker v4**. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
+**v2.3.0 is live.** Cross-account community viewing now handles wide YouTube sidebars and alternate channel layouts, the profile-description verification code is gone, and the shared Cloudflare service is running **Worker v4**. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
 
 Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
 
@@ -65,7 +65,7 @@ Connected profiles expire after **180 days** unless refreshed by publishing agai
 
 ## Check that community sharing works
 
-1. In your main Chrome profile, install/reload v2.2.2, sign into the channel, choose a small looping GIF, enter your handle, and publish.
+1. In your main Chrome profile, install/reload v2.3.0, sign into the channel, choose a small looping GIF, enter your handle, and publish.
 2. Create a second Chrome profile and install the same extension there. Enable **See other members' GIFs**. The viewer profile does **not** need to sign into YouTube, choose a GIF, or select an avatar.
 3. Open the published channel or a video/comment where that channel avatar is linked. The GIF should animate for the second profile.
 4. Turn Community pictures off and confirm the ordinary avatar returns.
