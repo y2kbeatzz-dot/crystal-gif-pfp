@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Crystal GIF PFP for YouTube",
-  "version": "2.1.1",
-  "description": "Use a GIF profile picture locally, or share it with other Crystal users without editing your channel description.",
+  "version": "2.2.0",
+  "description": "Animated YouTube avatars with reliable community sharing between Crystal users.",
   "permissions": [
     "storage",
     "activeTab",
