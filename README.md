@@ -7,13 +7,13 @@
 
 Local animated profile pictures · Optional community sharing · **No channel-description code** · Dark purple UI
 
-[⬇️ Download FIX EVERYTHING ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/raw/refs/heads/main/downloads/Crystal-GIF-PFP-FIX-EVERYTHING.zip) · [Download full project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
+[⬇️ Download FIX EVERYTHING ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/raw/refs/heads/main/downloads/Crystal-GIF-PFP-FIX-EVERYTHING-v2.2.4.zip) · [Download full project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
 
 </div>
 
 ## Current status
 
-**v2.2.1 fixes cross-account community viewing and removes the profile-description verification code.** The shared Cloudflare service is connected in the extension. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
+**v2.2.4 fixes cross-account community viewing and removes the profile-description verification code.** The shared Cloudflare service is connected in the extension. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
 
 Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
 
