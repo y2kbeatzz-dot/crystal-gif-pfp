@@ -1,18 +1,16 @@
 @echo off
 setlocal
-title Crystal GIF PFP - FIX EVERYTHING
+title Crystal GIF PFP - FIX EVERYTHING v2.2.5
 cd /d "%~dp0"
 
 echo.
 echo ==================================================
-echo   Crystal GIF PFP - FIX EVERYTHING
+echo   Crystal GIF PFP - FIX EVERYTHING v2.2.5
 echo ==================================================
 echo.
-echo This updater downloads the newest repair script from GitHub,
-echo updates Crystal GIF PFP, reuses your EXISTING Cloudflare D1
-echo database, deploys the newest Worker, and checks it live.
-echo.
-echo It does NOT create a second Cloudflare database.
+echo This updates your existing Crystal extension and Cloudflare Worker.
+echo It reuses your EXISTING crystal-shared-pfp D1 database.
+echo It does NOT create a second database.
 echo.
 
 where node.exe >nul 2>nul
@@ -22,12 +20,11 @@ if errorlevel 1 (
   exit /b 1
 )
 
-set "FIXSCRIPT=%TEMP%\crystal-gif-pfp-fix-everything.mjs"
+set "FIXSCRIPT=%~dp0scripts\fix-everything.mjs"
 
-echo Downloading newest repair script...
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/scripts/fix-everything.mjs' -OutFile '%FIXSCRIPT%'"
-if errorlevel 1 (
-  echo ERROR: Could not download the repair script from GitHub.
+if not exist "%FIXSCRIPT%" (
+  echo ERROR: scripts\fix-everything.mjs is missing.
+  echo Re-extract the v2.2.5 ZIP and keep the scripts folder next to this CMD.
   pause
   exit /b 1
 )
@@ -38,7 +35,7 @@ if errorlevel 1 (
   echo ==================================================
   echo   FIX STOPPED
   echo ==================================================
-  echo Send the error shown above back to ChatGPT.
+  echo Send the full error above back to ChatGPT.
   pause
   exit /b 1
 )
