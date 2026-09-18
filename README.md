@@ -13,9 +13,9 @@ Local animated profile pictures · Optional community sharing · **No channel-de
 
 ## Current status
 
-**v2.5.1 is live in the repo.** Cross-account community viewing now handles wide YouTube sidebars and alternate channel layouts, the profile-description verification code is gone, and the shared Cloudflare service is running **Worker v5**. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
+**v2.5.1 is live.** Cross-account community viewing is updated for 1 MB shared GIFs, wide YouTube sidebars, and alternate channel layouts. The profile-description verification code is gone, and the shared Cloudflare service is running **Worker v5**. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
 
-Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
+Server lookup has been verified against the live Worker v5 service. Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
 
 ![Crystal GIF PFP promotional artwork](store-assets/promo.png)
 
