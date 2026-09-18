@@ -5,17 +5,35 @@ let settings={},timer,picking=false,notice;
 const shared=new Map(), checked=new Map();let fetching=false;
 async function message(type,values={}){const r=await chrome.runtime.sendMessage({type,...values});if(!r?.ok)throw Error(r?.error||'Extension unavailable');return r.data;}
 function channelRef(href){try{const u=new URL(href,location.href);if(u.hostname!=='www.youtube.com'&&u.hostname!=='youtube.com')return '';const path=decodeURIComponent(u.pathname);const id=path.match(/^\/channel\/(UC[\w-]{22})(?:\/|$)/);if(id)return id[1];const handle=path.match(/^\/(@[^/?#]+)(?:\/|$)/);return handle?handle[1].toLowerCase():'';}catch{return '';}}
-function imageRef(img){const direct=img.closest('a[href]');if(direct){const r=channelRef(direct.href);if(r)return r;}
-const comment=img.closest('ytd-comment-view-model,ytd-comment-renderer');if(comment){const a=comment.querySelector('#author-text[href]');if(a)return channelRef(a.href);}
-if(img.closest('yt-page-header-renderer,ytd-c4-tabbed-header-renderer'))return channelRef(location.href);
-return '';}
-function desired(img,originalKey){if(settings.enabled!==false&&settings.gif&&originalKey===settings.target)return settings.gif;if(!settings.sharedEnabled)return null;const r=imageRef(img),p=shared.get(r);return p&&p.until>Date.now()&&p.avatar_key===originalKey&&!(settings.blocked||[]).includes(p.channel)?p.gif:null;}
+function imageRef(img){
+  const direct=img.closest('a[href]');
+  if(direct){const r=channelRef(direct.href);if(r)return r;}
+  const comment=img.closest('ytd-comment-view-model,ytd-comment-renderer');
+  if(comment){const a=comment.querySelector('#author-text[href]');if(a){const r=channelRef(a.href);if(r)return r;}}
+  const page=channelRef(location.href);
+  if(!page)return '';
+  if(img.closest('yt-page-header-renderer,ytd-c4-tabbed-header-renderer,#page-header-container,#page-header,yt-avatar-shape,.page-header-view-model-wiz__page-header-image'))return page;
+  // YouTube regularly changes channel-header wrappers. Fall back to the large,
+  // near-square image in the upper part of a channel page.
+  const r=img.getBoundingClientRect();
+  if(r.width>=64&&r.width<=260&&r.height>=64&&r.height<=260&&Math.abs(r.width-r.height)<12&&r.top>=80&&r.top<620&&r.left<420)return page;
+  return '';
+}
+function desired(img,originalKey){
+  if(settings.enabled!==false&&settings.gif&&originalKey===settings.target)return settings.gif;
+  if(!settings.sharedEnabled)return null;
+  const r=imageRef(img),p=shared.get(r);
+  // A channel can be rendered by YouTube with different avatar CDN URLs/sizes
+  // on different accounts/layouts. Channel identity is the lookup key; do not
+  // reject a published GIF only because the avatar image URL variant changed.
+  return p&&p.until>Date.now()&&!(settings.blocked||[]).includes(p.channel)?p.gif:null;
+}
 async function loadShared(refs){if(fetching||!settings.sharedEnabled)return;const pending=[...refs].filter(r=>(checked.get(r)||0)<Date.now()).slice(0,40);if(!pending.length)return;fetching=true;for(const r of pending)checked.set(r,Date.now()+60000);try{const profiles=await message('lookup',{refs:pending});for(const r of pending)shared.delete(r);for(const p of profiles){const value={...p,until:Date.now()+120000};shared.set(p.channel,value);if(p.handle)shared.set(p.handle,value);}while(shared.size>200)shared.delete(shared.keys().next().value);while(checked.size>500)checked.delete(checked.keys().next().value);}catch{}finally{fetching=false;schedule();}}
 
 const changed=new Map();
 function key(src){try{const u=new URL(src,location.href);if(!/(^|\.)(ggpht\.com|googleusercontent\.com)$/.test(u.hostname))return '';return u.hostname+u.pathname.replace(/=.+$/,'');}catch{return '';}}
 function restore(img,v){if(img.getAttribute('src')===v.applied){if(v.src===null)img.removeAttribute('src');else img.setAttribute('src',v.src);if(v.srcset!==null)img.setAttribute('srcset',v.srcset);}changed.delete(img);}
-function scan(){timer=null;const refs=new Set();
+function scan(){timer=null;const refs=new Set();const pageRef=channelRef(location.href);if(pageRef)refs.add(pageRef);
 for(const [img,v] of changed){if(!img.isConnected){restore(img,v);continue;}if(img.getAttribute('src')!==v.applied){changed.delete(img);continue;}if(img.hasAttribute('srcset')){v.srcset=img.getAttribute('srcset');img.removeAttribute('srcset');}if(desired(img,v.key)!==v.applied)restore(img,v);}
 for(const img of document.querySelectorAll('img')){const r=imageRef(img);if(r)refs.add(r);if(changed.has(img))continue;const k=key(img.getAttribute('src')||img.currentSrc),gif=desired(img,k);if(!gif)continue;changed.set(img,{src:img.getAttribute('src'),srcset:img.getAttribute('srcset'),key:k,applied:gif});img.removeAttribute('srcset');img.src=gif;}
 loadShared(refs);}
