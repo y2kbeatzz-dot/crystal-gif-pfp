@@ -7,13 +7,13 @@
 
 Local animated profile pictures · Optional community sharing · **No channel-description code** · Dark purple UI
 
-[⬇️ Download FIX EVERYTHING ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/raw/refs/heads/main/downloads/Crystal-GIF-PFP-FIX-EVERYTHING-v2.2.4.zip) · [Download full project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
+[⬇️ Download Crystal GIF PFP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
 
 </div>
 
 ## Current status
 
-**v2.2.4 fixes cross-account community viewing and removes the profile-description verification code.** The shared Cloudflare service is connected in the extension. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
+**v2.2.2 is live.** Cross-account community viewing is fixed, the profile-description verification code is gone, and the shared Cloudflare service is running **Worker v4**. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
 
 Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
 
@@ -65,7 +65,7 @@ Connected profiles expire after **180 days** unless refreshed by publishing agai
 
 ## Check that community sharing works
 
-1. In your main Chrome profile, install/reload v2.2, sign into the channel, choose a small looping GIF, enter your handle, and publish.
+1. In your main Chrome profile, install/reload v2.2.2, sign into the channel, choose a small looping GIF, enter your handle, and publish.
 2. Create a second Chrome profile and install the same extension there. Enable **See other members' GIFs**. The viewer profile does **not** need to sign into YouTube, choose a GIF, or select an avatar.
 3. Open the published channel or a video/comment where that channel avatar is linked. The GIF should animate for the second profile.
 4. Turn Community pictures off and confirm the ordinary avatar returns.
@@ -77,7 +77,3 @@ YouTube can change its page markup. Please report broken layouts through Issues.
 
 Built by [Crystal / Nitta Hoshi](https://github.com/y2kbeatzz-dot). This project is independent and is not affiliated with or endorsed by Google or YouTube.
 
-
-## One-click repair / Cloudflare update
-
-Download and run [`FIX-EVERYTHING.cmd`](https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/FIX-EVERYTHING.cmd). It downloads the newest updater automatically, finds your existing `crystal-shared-pfp` D1 database, updates the extension files, applies the safe schema, deploys the current Worker, verifies the live service, and opens Chrome's extensions page. It does **not** create a second database or replace your Cloudflare account.
