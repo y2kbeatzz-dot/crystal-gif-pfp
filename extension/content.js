@@ -31,7 +31,7 @@ function desired(img,originalKey){
 async function loadShared(refs){if(fetching||!settings.sharedEnabled)return;const pending=[...refs].filter(r=>(checked.get(r)||0)<Date.now()).slice(0,40);if(!pending.length)return;fetching=true;for(const r of pending)checked.set(r,Date.now()+60000);try{const profiles=await message('lookup',{refs:pending});for(const r of pending)shared.delete(r);for(const p of profiles){const value={...p,until:Date.now()+120000};shared.set(p.channel,value);if(p.handle)shared.set(p.handle,value);}while(shared.size>200)shared.delete(shared.keys().next().value);while(checked.size>500)checked.delete(checked.keys().next().value);}catch{}finally{fetching=false;schedule();}}
 
 const changed=new Map();
-function key(src){try{const u=new URL(src,location.href);if(!/(^|\.)(ggpht\.com|googleusercontent\.com)$/.test(u.hostname))return '';return u.hostname+u.pathname.replace(/=.+$/,'');}catch{return '';}}
+function key(src){try{const u=new URL(src,location.href);if(!/(^|\.)(ggpht\.com|googleusercontent\.com)$/.test(u.hostname))return '';return u.pathname.replace(/=.+$/,'');}catch{return '';}}
 function restore(img,v){if(img.getAttribute('src')===v.applied){if(v.src===null)img.removeAttribute('src');else img.setAttribute('src',v.src);if(v.srcset!==null)img.setAttribute('srcset',v.srcset);}changed.delete(img);}
 function scan(){timer=null;const refs=new Set();const pageRef=channelRef(location.href);if(pageRef)refs.add(pageRef);
 for(const [img,v] of changed){if(!img.isConnected){restore(img,v);continue;}if(img.getAttribute('src')!==v.applied){changed.delete(img);continue;}if(img.hasAttribute('srcset')){v.srcset=img.getAttribute('srcset');img.removeAttribute('srcset');}if(desired(img,v.key)!==v.applied)restore(img,v);}
