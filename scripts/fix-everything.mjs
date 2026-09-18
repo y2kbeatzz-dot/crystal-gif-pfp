@@ -13,11 +13,11 @@ const healthUrl='https://crystal-shared-pfp.crystal999bots.workers.dev/health';
 
 function banner(s){console.log('\n=== '+s+' ===');}
 function commandSpec(cmd,args){
-  // Windows cannot reliably spawn .cmd/.bat files directly from Node 24.
-  // Route them through cmd.exe so npm.cmd and npx.cmd work everywhere.
+  // Node 24 on Windows can fail when spawning .cmd/.bat directly.
+  // Pass the command and arguments to cmd.exe separately; do NOT pre-wrap
+  // the command in escaped quotes, or Windows sees a literal \"npm.cmd\".
   if(process.platform==='win32'&&/\.(cmd|bat)$/i.test(cmd)){
-    const quoted=[cmd,...args].map(v=>'"'+String(v).replaceAll('"','""')+'"').join(' ');
-    return {cmd:'cmd.exe',args:['/d','/s','/c',quoted]};
+    return {cmd:process.env.ComSpec||'cmd.exe',args:['/d','/c',cmd,...args]};
   }
   return {cmd,args};
 }
@@ -63,6 +63,7 @@ function addCandidate(set,p){
   if(!p||!isAbsolute(p))return;
   const q=resolve(p);
   if(q.startsWith(resolve(work)))return;
+  if(/-backup-before-/i.test(q))return;
   if(existsSync(join(q,'manifest.json'))&&manifestMatches(q))set.add(q);
 }
 function scanChromeLoadedExtensions(){
@@ -159,7 +160,7 @@ function openExtensions(paths){
   if(paths[0])spawnSync('explorer.exe',[paths[0]],{stdio:'ignore',windowsHide:true});
 }
 
-console.log('Crystal GIF PFP v2.2.3 — FIX EVERYTHING');
+console.log('Crystal GIF PFP v2.2.5 — FIX EVERYTHING');
 rmSync(work,{recursive:true,force:true});
 mkdirSync(extractRoot,{recursive:true});
 
