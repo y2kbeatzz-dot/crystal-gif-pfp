@@ -24,7 +24,15 @@ function toast(text){if(!notice){notice=document.createElement('div');notice.set
 function stop(){picking=false;document.removeEventListener('click',pick,true);document.removeEventListener('keydown',escape,true);if(notice){notice.remove();notice=null;}}
 function escape(e){if(e.key==='Escape'){e.preventDefault();stop();}}
 async function pick(e){if(!picking)return;e.preventDefault();e.stopImmediatePropagation();const el=e.target instanceof Element?e.target:null;const img=el?.closest('img')||el?.closest('yt-img-shadow,#avatar-btn,#avatar')?.querySelector('img');const k=img&&(changed.get(img)?.key||key(img.getAttribute('src')||img.currentSrc));if(!k){toast('Click directly on your profile picture. Press Esc to cancel.');return;}try{const accountAvatar=!!img.closest('#avatar-btn');await message('local-selection',{target:k,accountAvatar});settings.target=k;settings.accountAvatar=accountAvatar;settings.enabled=true;schedule();if(accountAvatar)toast('Signed-in profile picture selected. You can share with the community now.');else toast('Picture selected for local mode. For community sharing, select your top-right signed-in avatar.');setTimeout(stop,900);}catch{toast('Could not save. Refresh YouTube and try again. Esc cancels.');}}
-chrome.runtime.onMessage.addListener((m,s,reply)=>{if(m.type==='state-update'){settings=m.state;checked.clear();schedule();reply({ok:true});}if(m.type==='pick-avatar'){stop();picking=true;toast('Click your signed-in profile picture in the top-right. Press Esc to cancel.');document.addEventListener('click',pick,true);document.addEventListener('keydown',escape,true);reply({ok:true});}});
+chrome.runtime.onMessage.addListener((m,s,reply)=>{
+  if(m.type==='state-update'){settings=m.state;checked.clear();schedule();reply({ok:true});return;}
+  if(m.type==='pick-avatar'){stop();picking=true;toast('Click the picture you want to animate. Press Esc to cancel.');document.addEventListener('click',pick,true);document.addEventListener('keydown',escape,true);reply({ok:true});return;}
+  if(m.type==='get-account-avatar'){
+    const img=document.querySelector('#avatar-btn img');
+    const k=img&&(changed.get(img)?.key||key(img.getAttribute('src')||img.currentSrc));
+    reply({ok:true,key:k||''});
+  }
+});
 message('state').then(s=>{settings=s;schedule();}).catch(()=>{});
 new MutationObserver(schedule).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['src','srcset','href']});
 // YouTube replaces avatar nodes during navigation and hydrates images later.
