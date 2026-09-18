@@ -1,6 +1,6 @@
 const $=id=>document.getElementById(id);
 let currentGifInfo=null;
-const SHARE_BYTES=512*1024, LOCAL_BYTES=5*1024*1024, SHARE_DIM=512;
+const SHARE_BYTES=1024*1024, LOCAL_BYTES=5*1024*1024, SHARE_DIM=512;
 function bytesText(n){return n<1024? n+' B' : n<1024*1024 ? (n/1024).toFixed(1)+' KB' : (n/1024/1024).toFixed(2)+' MB';}
 function parseGifBytes(bytes){
   if(!bytes||bytes.length<10)return {realGif:false,size:bytes?.length||0,width:0,height:0,shareReady:false};
@@ -26,7 +26,7 @@ function showGifCheck(info,label='Saved GIF'){
   const text=label+': '+bytesText(info.size)+' · '+info.width+' × '+info.height+' px';
   if(info.shareReady){el.className='check good';el.textContent='✓ Share-ready — '+text;return;}
   const problems=[];
-  if(info.size>SHARE_BYTES)problems.push('over 512 KB');
+  if(info.size>SHARE_BYTES)problems.push('over 1 MB');
   if(info.width>SHARE_DIM||info.height>SHARE_DIM)problems.push('over 512 × 512 px');
   el.className='check warn';el.textContent='Local only — '+text+' · '+problems.join(' and ')+'. Use the GIF tools below before sharing.';
 }
@@ -43,7 +43,7 @@ $('file').onchange=async()=>{try{const f=$('file').files[0];if(!f)return;const b
 action('pick',async()=>{const [tab]=await chrome.tabs.query({active:true,currentWindow:true});if(!tab?.url||new URL(tab.url).hostname!=='www.youtube.com')throw Error('Open YouTube first.');try{await chrome.tabs.sendMessage(tab.id,{type:'pick-avatar'});}catch{await chrome.scripting.executeScript({target:{tabId:tab.id},files:['content.js']});await chrome.tabs.sendMessage(tab.id,{type:'pick-avatar'});}window.close();});
 for(const [id,key] of [['enabled','enabled'],['shared','sharedEnabled']])$(id).onchange=async()=>{try{await send('set',{values:{[key]:$(id).checked}});status('Saved.');}catch(e){status(e.message);}};
 action('share',async()=>{
-  if(!currentGifInfo?.shareReady)throw Error('This GIF is not share-ready yet. It must be a real GIF, 512 KB or smaller, and no larger than 512 × 512 px.');
+  if(!currentGifInfo?.shareReady)throw Error('This GIF is not share-ready yet. It must be a real GIF, 1 MB or smaller, and no larger than 512 × 512 px.');
   if(!$('consent').checked)throw Error('Confirm that you have permission to share this GIF publicly.');
   const channel=$('channel').value.trim();
   if(!channel)throw Error('Enter your YouTube @handle.');
