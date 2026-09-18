@@ -12,15 +12,26 @@ const latestUrl='https://codeload.github.com/y2kbeatzz-dot/crystal-gif-pfp/zip/r
 const healthUrl='https://crystal-shared-pfp.crystal999bots.workers.dev/health';
 
 function banner(s){console.log('\n=== '+s+' ===');}
+function commandSpec(cmd,args){
+  // Windows cannot reliably spawn .cmd/.bat files directly from Node 24.
+  // Route them through cmd.exe so npm.cmd and npx.cmd work everywhere.
+  if(process.platform==='win32'&&/\.(cmd|bat)$/i.test(cmd)){
+    const quoted=[cmd,...args].map(v=>'"'+String(v).replaceAll('"','""')+'"').join(' ');
+    return {cmd:'cmd.exe',args:['/d','/s','/c',quoted]};
+  }
+  return {cmd,args};
+}
 function run(cmd,args,cwd,allowFail=false){
   console.log('> '+cmd+' '+args.join(' '));
-  const r=spawnSync(cmd,args,{cwd,stdio:'inherit',windowsHide:false});
+  const spec=commandSpec(cmd,args);
+  const r=spawnSync(spec.cmd,spec.args,{cwd,stdio:'inherit',windowsHide:false});
   if(r.error)throw r.error;
   if(r.status!==0&&!allowFail)throw new Error(cmd+' exited with code '+r.status);
   return r.status===0;
 }
 function capture(cmd,args,cwd){
-  const r=spawnSync(cmd,args,{cwd,encoding:'utf8',windowsHide:true});
+  const spec=commandSpec(cmd,args);
+  const r=spawnSync(spec.cmd,spec.args,{cwd,encoding:'utf8',windowsHide:true});
   if(r.error)throw r.error;
   if(r.status!==0)throw new Error((r.stderr||r.stdout||cmd+' failed').trim());
   return {out:r.stdout||'',err:r.stderr||''};
@@ -148,7 +159,7 @@ function openExtensions(paths){
   if(paths[0])spawnSync('explorer.exe',[paths[0]],{stdio:'ignore',windowsHide:true});
 }
 
-console.log('Crystal GIF PFP v2.2.1 — FIX EVERYTHING');
+console.log('Crystal GIF PFP v2.2.3 — FIX EVERYTHING');
 rmSync(work,{recursive:true,force:true});
 mkdirSync(extractRoot,{recursive:true});
 
