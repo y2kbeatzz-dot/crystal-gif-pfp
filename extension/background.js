@@ -17,6 +17,7 @@ if(m.type==='local-selection'){
 }
 if(!ui)throw Error('This action is only available in the extension.');
 if(m.type==='set'){const allowed={};for(const k of publicKeys)if(k in m.values)allowed[k]=m.values[k];await chrome.storage.local.set(allowed);cache.clear();return {ok:true};}
+if(m.type==='refresh-community'){cache.clear();return {cleared:true};}
 if(m.type==='account'){const s=await chrome.storage.local.get('account');const h=CONFIG.apiBase?await health():{version:0};return {account:s.account?{channel:s.account.channel,title:s.account.title,handle:s.account.handle||''}:null,ready:!!CONFIG.apiBase&&Number(h.version)>=2,publishReady:!!CONFIG.apiBase&&Number(h.version)>=5,serviceVersion:Number(h.version)||0};}
 if(m.type==='claim'){
   const h=await health();if(Number(h.version)<5)throw Error('Community sharing needs Worker v5 for the 1 MB limit. Update the Cloudflare Worker, then try again.');
