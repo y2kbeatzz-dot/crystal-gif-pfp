@@ -8,14 +8,9 @@ echo ==================================================
 echo   Crystal GIF PFP - FIX EVERYTHING
 echo ==================================================
 echo.
-echo This updater:
-echo   - downloads the newest Crystal GIF PFP source
-echo   - updates your existing unpacked Chrome copy when found
-echo   - keeps a backup of the old extension folder
-echo   - reuses your EXISTING Cloudflare D1 database
-echo   - applies the safe database schema
-echo   - deploys the newest Worker
-echo   - checks that Worker v4+ is live
+echo This updater downloads the newest repair script from GitHub,
+echo updates Crystal GIF PFP, reuses your EXISTING Cloudflare D1
+echo database, deploys the newest Worker, and checks it live.
 echo.
 echo It does NOT create a second Cloudflare database.
 echo.
@@ -23,12 +18,21 @@ echo.
 where node.exe >nul 2>nul
 if errorlevel 1 (
   echo ERROR: Node.js was not found.
-  echo You already used npm/wrangler before, so normally Node should be installed.
   pause
   exit /b 1
 )
 
-node.exe "%~dp0scripts\fix-everything.mjs"
+set "FIXSCRIPT=%TEMP%\crystal-gif-pfp-fix-everything.mjs"
+
+echo Downloading newest repair script...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/y2kbeatzz-dot/crystal-gif-pfp/main/scripts/fix-everything.mjs' -OutFile '%FIXSCRIPT%'"
+if errorlevel 1 (
+  echo ERROR: Could not download the repair script from GitHub.
+  pause
+  exit /b 1
+)
+
+node.exe "%FIXSCRIPT%"
 if errorlevel 1 (
   echo.
   echo ==================================================
@@ -44,15 +48,7 @@ echo ==================================================
 echo   FIX COMPLETE
 echo ==================================================
 echo.
-echo Chrome Extensions should be open now.
-echo Click Reload on Crystal GIF PFP in BOTH Chrome profiles,
+echo Reload Crystal GIF PFP in BOTH Chrome profiles,
 echo then refresh both YouTube windows.
-echo.
-echo On your main profile:
-echo   choose the GIF ^> Share my GIF ^> enter @handle ^> Share
-echo.
-echo On the other/viewer profile:
-echo   ONLY enable "See other members' GIFs".
-echo   It does not need to be signed into YouTube.
 echo.
 pause
