@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Crystal GIF PFP for YouTube",
-  "version": "2.5.1",
-  "description": "Animated YouTube avatars with 1 MB community sharing and matching 1 MB viewer support.",
+  "version": "2.5.2",
+  "description": "Animated YouTube avatars with 1 MB community sharing, viewer diagnostics, and manual community refresh.",
   "permissions": [
     "storage",
     "activeTab",
