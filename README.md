@@ -5,70 +5,74 @@
 
 **Your YouTube picture, with a little motion.**
 
-Local animated profile pictures · Optional verified community sharing · Dark purple UI
+Local animated profile pictures · Optional community sharing · **No channel-description code** · Dark purple UI
 
-[Landing page HTML](index.html) · [Download the shared extension](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
+[Landing page HTML](index.html) · [Download the extension](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) · [Report an issue](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/issues)
 
 </div>
 
 ## Current status
 
-**The shared service is deployed, and the download is already connected.** Install the extension to use local GIFs or opt into community sharing. No server setup or API key is needed for users. This is a GitHub preview, not a Chrome Web Store listing. Live channel verification and sharing between browsers still need acceptance testing.
+**v2.1 removes the profile-description verification code.** The shared Cloudflare service is connected in the extension. Users can keep a GIF local or publish it for other Crystal users without editing their YouTube channel description.
 
-Only people using this extension and the same shared service can see each other's published GIFs. Everyone else still sees the normal YouTube picture. This extension does not change the public picture on Google's servers.
+Only people using this extension with **Community pictures** enabled can see published GIFs. Everyone else still sees the normal YouTube picture. Crystal does not change the picture stored on Google's servers.
 
 ![Crystal GIF PFP promotional artwork](store-assets/promo.png)
 
 ## Install in Chrome
 
-1. [Download the project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) and use **Extract All** into a permanent folder.
+1. [Download the project ZIP](https://github.com/y2kbeatzz-dot/crystal-gif-pfp/archive/refs/heads/main.zip) and choose **Extract All**.
 2. Open `chrome://extensions` and enable **Developer mode**.
-3. Click **Load unpacked**, open the extracted `crystal-gif-pfp-main` folder, and select its **extension** folder (the one containing `manifest.json`).
-4. Refresh YouTube once. Open Crystal from Chrome's puzzle menu.
-5. Choose a GIF, click **Select my picture on YouTube**, then click your profile picture.
+3. Click **Load unpacked** and select the extracted **extension** folder (the folder containing `manifest.json`).
+4. Refresh YouTube and open Crystal from Chrome's extensions menu.
+5. Choose a GIF, click **Select my picture on YouTube**, then click your **signed-in avatar in the top-right**.
 
-To update without losing your saved GIF, replace the files in the same folder, click **Reload** on the extension, and refresh your open YouTube tabs. Do not remove the extension first.
+To update without losing your settings, replace the files in the same extension folder, click **Reload** in `chrome://extensions`, and refresh YouTube. Do not remove the extension first.
 
 ## What it does
 
 - Saves a local GIF and restores it as YouTube changes videos or pages.
-- Enables shared pictures only when the viewer opts in.
-- Verifies a publishing channel using a temporary code in its public description.
-- Publishes one GIF per verified channel, with deletion and 30-day verification renewal.
-- Matches shared GIFs using a channel link plus its verified avatar image address.
-- Includes local blocking, reporting, and operator removal tools.
+- Lets viewers opt into shared community GIFs.
+- Connects a publishing channel by matching the signed-in YouTube avatar you select with the public avatar for the handle you enter.
+- Publishes one GIF per connected channel, with deletion, blocking, reporting, and operator removal tools.
+- Matches shared GIFs using the channel link plus the channel's public avatar image key.
+- Does **not** require a verification string in your bio/channel description.
 
-A shared GIF must be at most **512 KB** and **512 × 512 pixels**. Local GIFs can be up to **5 MB**. Use a looping GIF for continuous playback; new image elements start from the first frame.
+A shared GIF must be at most **512 KB** and **512 × 512 pixels**. Local GIFs can be up to **5 MB**. Use a looping GIF for continuous playback.
 
-## Share your GIF
+## Share your GIF — no profile code
 
-1. Enable **See other members' GIFs** if you want community pictures.
-2. Open **Share my GIF**, enter your YouTube handle, and start verification.
-3. Add the temporary code to your public channel description in YouTube Studio.
-4. Click **Check code**, then remove the code from your description.
-5. Confirm you have permission to share the image and click **Publish my GIF**.
+1. Sign into the YouTube channel you want to use.
+2. Choose your GIF in Crystal.
+3. Click **Select my picture on YouTube**, then click the avatar in YouTube's **top-right account button**.
+4. Enter your YouTube `@handle`, confirm you have permission to share the GIF, and click **Share my GIF with the community**.
+5. Turn on **See other members' GIFs** to view community pictures too.
 
-Publishing is public. You can remove it with **Delete shared profile**. Uninstalling the extension alone does not remove a published profile. Reverify your channel if you lose management access. Others must install a build using the same API origin.
+That's it. There is no description code to copy, paste, save, or remove.
+
+Publishing is public to Crystal users. Use **Delete shared profile** to remove your shared record. Uninstalling the extension alone does not delete a published profile.
+
+## How the no-code connection works
+
+The extension normalizes the image address of the signed-in top-right YouTube avatar you clicked. The Cloudflare service resolves the `@handle` you entered with the YouTube Data API and compares its current public avatar key. A connection is issued only when those avatar keys match.
+
+This is intentionally a lightweight convenience check, **not Google OAuth and not cryptographic proof of channel ownership**. It avoids putting junk text in a channel profile while still preventing ordinary accidental handle mix-ups. Do not treat it as high-security authentication.
 
 ## Privacy
 
-Local mode makes no requests to the shared service. Shared mode sends visible channel IDs or handles for lookup; it does not send video URLs, comments, or video titles. The service stores published GIFs, channel metadata, verification timestamps and hashed management tokens. Management credentials stay in trusted extension storage, away from YouTube page scripts. See [the privacy policy](extension/privacy.html).
+Local mode keeps the GIF and selected image key in Chrome storage. Shared mode sends visible channel IDs/handles for lookups. Publishing stores the GIF, public channel ID, handle, title, public avatar key, timestamps, and a hashed management token. Full video URLs, video titles, comments, and watch history are not sent to the service.
 
-## Limitations and testing
+Connected profiles expire after **180 days** unless refreshed by publishing again. See [the privacy policy](extension/privacy.html).
 
-Server integration tests use a real in-memory SQLite database with a mocked YouTube API. They cover verification, invalid tokens, replay rejection, publishing, separate viewer lookups, removal, request limits and validation. The deployed service responds to health checks and has its verification secret configured. Live YouTube compatibility, successful channel verification and sharing between browsers still need acceptance testing.
+## Check that community sharing works
 
-YouTube can change its markup. Shared matching currently covers linked avatars, comment authors and channel headers where the channel and original avatar can be identified. Live chat, YouTube Studio, mobile apps, unlinked avatars and every possible YouTube layout are not guaranteed. The local image-address match can also affect identical/default pictures; use a unique original avatar. If a channel changes its normal avatar or handle, reverify to refresh its shared mapping.
+1. In your main Chrome profile, install/reload v2.1, choose a small looping GIF, select your signed-in top-right avatar, enter your handle, and publish.
+2. Create a second Chrome profile and install the same extension there. Enable **See other members' GIFs**. Do not select a local GIF in that second profile.
+3. Open the published channel or a video/comment where that channel avatar is linked. The GIF should animate for the second profile.
+4. Turn Community pictures off and confirm the ordinary avatar returns.
+5. Delete the shared profile from the first Chrome profile. After caches refresh, the shared GIF should disappear for the second profile.
 
-## Check that sharing works
-
-1. In your main Chrome profile, choose a looping GIF, verify your channel and publish it.
-2. Create a second Chrome profile and install this same extension there. Enable **See other members' GIFs**. Do not select a local GIF in that profile.
-3. Open your channel and a video or comment with your linked avatar in the second profile. Your published GIF should animate.
-4. Navigate to another video and check again. Turn community pictures off to confirm the ordinary avatar returns.
-5. Delete the shared profile in your main profile. Allow five minutes for caches, then check that it disappears for the second viewer.
-
-A healthy service alone does not prove these browser checks pass. Please report any failed step through Issues.
+YouTube can change its page markup. Please report broken layouts through Issues.
 
 ## Credits
 
